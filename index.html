@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="ChargeEase - find EV charging stations in Chennai, view them on Google Maps and book a charger.">
+  <meta name="theme-color" content="#07202b">
+  <title>ChargeEase | EV Charging</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <a class="logo" href="#home"><span>⚡</span>ChargeEase</a>
+    <nav id="menu" aria-label="Main">
+      <a href="#home">Home</a><a href="#stations">Stations</a><a href="#map">Map</a>
+      <a href="#calc">Calculator</a><a href="#plans">Plans</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn sm" href="#bookingSection">Book now</a>
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><i></i></button>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <span class="pill"><b></b> Live charger availability · Chennai</span>
+        <h1>Charge faster.<br>Go <em>further.</em></h1>
+        <p>Find charging stations, check charger availability and book your slot in seconds, then navigate there with Google Maps.</p>
+        <form class="quick" id="quick">
+          <input id="quickSearch" type="search" placeholder="Search area or station..." aria-label="Search area or station">
+          <select id="quickConnector" aria-label="Connector type">
+            <option value="">Any connector</option><option>CCS2</option><option>Type 2</option>
+          </select>
+          <button class="btn" type="submit">Find chargers</button>
+        </form>
+        <div class="hero-stats">
+          <div><strong data-count="10">0</strong><span>Stations</span></div>
+          <div><strong data-count="120" data-suffix=" kW">0</strong><span>Fastest charger</span></div>
+          <div><strong data-count="24" data-suffix="/7">0</strong><span>Open access</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="https://picsum.photos/seed/ev-charge-hero/900/1100" alt="Electric car charging at a station" width="900" height="1100">
+        <div class="float f1"><i>⚡</i><div><b>120 kW</b><small>Ultra-fast CCS2</small></div></div>
+        <div class="float f2"><i class="ok"></i><div><b id="liveCount">-- available</b><small>right now</small></div></div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div id="marquee"></div></div>
+
+    <section class="section" id="stations">
+      <div class="head">
+        <span class="eyebrow">Charging network</span>
+        <h2>Find your charging station</h2>
+        <p>Explore stations and compare charger options.</p>
+      </div>
+      <div class="search-bar">
+        <input id="searchInput" type="search" placeholder="Search station or city..." aria-label="Search stations">
+        <select id="statusFilter" aria-label="Filter by availability">
+          <option value="all">All chargers</option><option value="available">Available</option><option value="occupied">Occupied</option>
+        </select>
+        <button class="btn" id="searchBtn">Search</button>
+      </div>
+      <div class="chips" id="chips">
+        <button class="chip on" data-c="all">All</button><button class="chip" data-c="CCS2">CCS2 fast</button><button class="chip" data-c="Type 2">Type 2</button>
+      </div>
+      <div class="results-heading"><h3>Featured stations</h3><span id="resultCount">Loading stations...</span></div>
+      <div class="station-grid" id="stationGrid"></div>
+    </section>
+
+    <section class="section dark" id="map">
+      <div class="head">
+        <span class="eyebrow">Google Maps</span>
+        <h2>See every charger on the map</h2>
+        <p>Pick a station to preview it, open it in Google Maps or get directions.</p>
+      </div>
+      <div class="map-wrap">
+        <ul class="map-list" id="mapList"></ul>
+        <div class="map-frame">
+          <iframe id="mapFrame" title="Charging stations map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="map-actions">
+            <a class="btn sm" id="mapOpen" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+            <a class="btn sm ghost" id="mapDir" target="_blank" rel="noopener">Get directions ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="head center">
+        <span class="eyebrow">Three simple steps</span>
+        <h2>Charging made simple</h2>
+      </div>
+      <div class="steps" id="steps"></div>
+    </section>
+
+    <section class="section tint" id="calc">
+      <div class="calc">
+        <div>
+          <span class="eyebrow">Charging calculator</span>
+          <h2>Estimate cost and time</h2>
+          <p>Choose a station and how much energy you need.</p>
+          <label for="calcStation">Station</label>
+          <select id="calcStation"></select>
+          <label for="calcKwh">Energy needed: <b id="calcKwhLabel">20 kWh</b></label>
+          <input type="range" id="calcKwh" min="5" max="80" value="20">
+        </div>
+        <div class="calc-out">
+          <small>Estimated cost</small>
+          <strong id="calcCost">₹0</strong>
+          <div class="calc-row"><span>Charging time</span><b id="calcTime">--</b></div>
+          <div class="calc-row"><span>Charger power</span><b id="calcPower">--</b></div>
+          <div class="calc-row"><span>Price</span><b id="calcPrice">--</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="plans">
+      <div class="head center">
+        <span class="eyebrow">Plans</span>
+        <h2>Simple pricing for every driver</h2>
+        <p>Demo plans for the prototype. No real payments.</p>
+      </div>
+      <div class="plans" id="planGrid"></div>
+    </section>
+
+    <section class="section tint" id="bookingSection">
+      <div class="book">
+        <aside class="book-info">
+          <img src="https://picsum.photos/seed/ev-booking/700/500" alt="Electric car plugged in" loading="lazy">
+          <h2>Book Your Charging Slot ⚡</h2>
+          <p>Choose your station and reserve your preferred time.</p>
+          <ul><li>Instant demo confirmation</li><li>Free cancellation anytime</li><li>Reserved charger waiting for you</li></ul>
+        </aside>
+        <form id="bookingForm" class="card-form">
+          <div class="field"><label for="customerName">Customer Name</label>
+            <input type="text" id="customerName" name="customerName" placeholder="Enter your full name" required></div>
+          <div class="field"><label for="customerEmail">Customer Email</label>
+            <input type="email" id="customerEmail" name="customerEmail" placeholder="Enter your email address" required></div>
+          <div class="field full"><label for="bookingStation">Charging Station</label>
+            <select id="bookingStation" required><option value="">Select a station</option></select></div>
+          <div class="field"><label for="bookingDate">Booking Date</label>
+            <input type="date" id="bookingDate" required></div>
+          <div class="field"><label for="bookingTime">Time Slot</label>
+            <select id="bookingTime" required>
+              <option value="">Select a time</option>
+              <option value="09:00">9:00 AM</option><option value="11:00">11:00 AM</option>
+              <option value="13:00">1:00 PM</option><option value="15:00">3:00 PM</option><option value="17:00">5:00 PM</option>
+            </select></div>
+          <div class="field full"><label for="vehicleNumber">Vehicle Number (Optional)</label>
+            <input type="text" id="vehicleNumber" placeholder="e.g. TN01AB1234"></div>
+          <button type="submit" class="btn full">Confirm Booking</button>
+          <p id="bookingMessage" class="full" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="panel" id="paymentSection" hidden>
+        <h2>Payment Summary 💳</h2>
+        <p>Your demo booking details are ready.</p>
+        <p>Booking ID: <strong id="paymentBookingId"></strong></p>
+        <p>Charging Station: <strong id="paymentStation"></strong></p>
+        <p>Estimated Cost: <strong id="paymentAmount"></strong></p>
+        <label for="paymentMethod">Choose Payment Method</label>
+        <select id="paymentMethod">
+          <option value="UPI">UPI (Demo)</option><option value="Card">Card (Demo)</option><option value="Station">Pay at Station (Demo)</option>
+        </select>
+        <button type="button" class="btn" id="payButton">Pay Now (Demo)</button>
+        <p id="paymentMessage" aria-live="polite"></p>
+      </div>
+
+      <div class="panel" id="myBookingsSection">
+        <h2>My Bookings 📋</h2>
+        <p>View your saved demo charging bookings.</p>
+        <div id="myBookingsList"><p>No bookings yet. Book a charging slot to get started!</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="reviews">
+      <div class="head center"><span class="eyebrow">Driver stories</span><h2>Loved by EV drivers</h2></div>
+      <div class="reviews" id="reviewGrid"></div>
+    </section>
+
+    <section class="section tint" id="faq">
+      <div class="head center"><span class="eyebrow">FAQ</span><h2>Questions, answered</h2></div>
+      <div class="faq" id="faqList"></div>
+    </section>
+
+    <section class="cta">
+      <div class="cta-in">
+        <div><h2>Your next charge starts here.</h2><p>Smarter charging for a greener tomorrow. Book a slot in under a minute.</p>
+          <a class="btn" href="#bookingSection">Book a charger →</a></div>
+        <img src="https://picsum.photos/seed/ev-cta/640/420" alt="EV on a city road" loading="lazy">
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#home"><span>⚡</span>ChargeEase</a>
+        <p>Smarter charging for a greener tomorrow. Find, compare and book EV chargers across Chennai.</p>
+        <form class="news" id="newsForm">
+          <input type="email" placeholder="Your email" aria-label="Newsletter email" required><button class="btn sm">Subscribe</button>
+        </form>
+      </div>
+      <div><h4>Explore</h4><a href="#stations">Find stations</a><a href="#map">Map</a><a href="#calc">Calculator</a><a href="#plans">Plans</a></div>
+      <div><h4>Support</h4><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="#bookingSection">Book a slot</a><a href="#myBookingsSection">My bookings</a></div>
+      <div><h4>Contact</h4><span>Anna Salai, Chennai</span><span>hello@chargeease.demo</span><span>+91 00000 00000</span>
+        <a href="https://www.google.com/maps/search/?api=1&query=EV+charging+stations+Chennai" target="_blank" rel="noopener">Find us on Google Maps ↗</a></div>
+    </div>
+    <div class="gallery" id="gallery" aria-label="Photo gallery"></div>
+    <div class="foot-bar"><small>© 2026 ChargeEase · College project prototype · Sample station data</small><a href="#home">Back to top ↑</a></div>
+  </footer>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
